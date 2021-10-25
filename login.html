@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+	<!-- Javascript SDKs-->
+	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script> 
+	<script src="js/amazon-cognito-auth.min.js"></script>
+	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script> 
+	<script src="js/amazon-cognito-identity.min.js"></script>   
+	<script src="js/config.js"></script>
+
+  </head>
+  <style>
+   .main-class{
+             
+              display: flex;
+              flex-direction : column;
+              margin-left: 40%;
+              
+              }
+   .register-class{
+                display: flex;
+              flex-direction : row;
+              margin-left: 50%;
+            }
+   .button-class {
+ 
+           margin-top: 2%;
+           float: right;
+        }
+     .field-class{
+               padding:1%;
+               width:40%;
+               font-size: 18px;
+       }
+      .sub-class{
+               padding-bottom: 2%;
+               margin-left: -19%;
+          }
+      body{
+           background-image: url("loginpic.jpg");
+           background-repeat: no-repeat;    
+           width: 95%;
+           height: 100%;
+           background-size: cover;
+    }
+  </style>
+  <body>
+    <form>
+      <h1 style="text-align:center; font-size: 50px; margin-bottom: 4%; margin-left: -12%; color: white">Login</h1>
+      <div class=" main-class">
+         
+       <div class="sub-class"><input class= "field-class" type="text" id="inputUsername"  placeholder="Email address" name="username" required autofocus></div>
+      <div class="sub-class"><input class= "field-class" type="password" id="inputPassword"  placeholder="Password" name="password" required></div>
+      </div>
+     <div class="register-class"><div class=" button-class "><button type="button" onclick="signInButton() " style="padding: 7px 20px;">Sign in</button></div>
+       <div style= "font-size: 18px; margin-left:-60%;
+    margin-top: 13%;
+    colour: white;
+    font-size: 18px;"> <a style="color:white; text-decoration:none; font-size: 20px"  href="register.html"> Didn't have an account? Register Here</a></div>
+    </div>
+     
+    </form>
+
+
+<script>
+
+  function signInButton() {
+    
+	var authenticationData = {
+        Username : document.getElementById("inputUsername").value,
+        Password : document.getElementById("inputPassword").value,
+    };
+	
+    var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+    
+	var poolData = {
+        UserPoolId : "us-east-1_q1CqTUpzK", // Your user pool id here
+        ClientId : "5hm1rt6g4t0c5d5oh2rp0n64jj", // Your client id here
+    };
+	
+    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+	
+    var userData = {
+        Username : document.getElementById("inputUsername").value,
+        Pool : userPool,
+    };
+	
+    var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+    
+	cognitoUser.authenticateUser(authenticationDetails, {
+        onSuccess: function (result) {
+			var accessToken = result.getAccessToken().getJwtToken();
+			console.log(accessToken);
+                       window.location.href = "homepage.html";
+                       
+        },
+
+        onFailure: function(err) {
+            alert(err.message || JSON.stringify(err));
+        },
+    });
+  }
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
