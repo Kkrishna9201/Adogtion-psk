@@ -77,7 +77,7 @@ const uploadDB = async (orgzn_name,location,email,contact,breed,file_name) => {
         .then(function (response) {
             
             alert("Submitted Successfully")
-            window.location.reload();
+            window.location.href="thanks1.html";
         })
         .catch(function (error) {
             
